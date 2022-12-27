@@ -97,6 +97,34 @@ class MainActivity : AppCompatActivity() {
         //  lemonade making progression (or at least make some changes to the current state in the
         //  case of squeezing the lemon). That should be done in this conditional statement
 
+        // logic for each state
+        when (lemonadeState) {
+            SELECT -> {
+                lemonadeState = SQUEEZE
+                val LemonTree = LemonTree()
+                lemonSize = LemonTree.pick()
+                squeezeCount = 0
+            }
+            SQUEEZE -> {
+                squeezeCount++
+                lemonSize--
+
+                if (lemonSize == 0) {
+                    lemonadeState = DRINK
+                }
+            }
+            DRINK -> {
+                lemonadeState = RESTART
+                lemonSize = -1
+            }
+            RESTART -> {
+                lemonadeState = SELECT
+            }
+        }
+
+        // updates UI based on new state
+        setViewElements()
+
         // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
         //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
         //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
